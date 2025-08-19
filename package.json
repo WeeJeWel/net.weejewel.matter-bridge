@@ -1,0 +1,17 @@
+{
+  "name": "net.weejewel.matter-bridge",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts --ignore-path .gitignore .",
+    "clean-node-modules": "find node_modules -type f \\( -name '*.d.ts' -o -name '*.map' -o -name '*.ts' \\) -delete; find node_modules -type d \\( -name 'src' -o -name 'cjs' \\) -exec rm -rf {} +"
+  },
+  "devDependencies": {
+    "@types/homey": "npm:homey-apps-sdk-v3-types@^0.3.12",
+    "eslint": "^7.32.0",
+    "eslint-config-athom": "^3.1.5"
+  },
+  "dependencies": {
+    "@matter/main": "^0.15.3"
+  }
+}
