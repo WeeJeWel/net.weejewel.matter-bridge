@@ -21,3 +21,5 @@ $ npm run standalone
 This will run a separate server, but you don't need to upload it to Homey Pro every time, which saves a lot of precious development time. It automatically reloads on file changes.
 
 Scan the QR Code in the terminal with e.g. Apple Home to perform the initial pairing.
+
+> See .envrc.sample for the required environment variables.

@@ -1,0 +1,2 @@
+export HOMEY_ADDRESS="http://..."
+export HOMEY_TOKEN="abc..."
