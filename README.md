@@ -23,3 +23,7 @@ This will run a separate server, but you don't need to upload it to Homey Pro ev
 Scan the QR Code in the terminal with e.g. Apple Home to perform the initial pairing.
 
 > See .envrc.sample for the required environment variables.
+
+## Specification
+
+Download the latest *Matter Application Cluster Specification* from https://csa-iot.org/developer-resource/specifications-download-request/.

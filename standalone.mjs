@@ -11,7 +11,7 @@ const server = new MatterBridgeServer({
   api,
   debug: (...props) => console.log(`[MatterBridgeServer]`, ...props),
   storageServiceLocation: './.matter/',
-});
-await server.start({
   uniqueId: 'standalone',
+  serialNumber: 'standalone',
 });
+await server.start();
