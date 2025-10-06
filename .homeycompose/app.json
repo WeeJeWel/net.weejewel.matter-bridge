@@ -28,5 +28,25 @@
     "name": "Emile Nijssen",
     "email": "emile@athom.nl"
   },
-  "support": "mailto:emile@emile.nl"
+  "support": "mailto:emile@emile.nl",
+  "api": {
+    "getDevices": {
+      "method": "GET",
+      "path": "/devices"
+    },
+    "enableDevice": {
+      "method": "POST",
+      "path": "/devices/enable",
+      "body": {
+        "deviceId": "string"
+      }
+    },
+    "disableDevice": {
+      "method": "POST",
+      "path": "/devices/disable",
+      "body": {
+        "deviceId": "string"
+      }
+    }
+  }
 }

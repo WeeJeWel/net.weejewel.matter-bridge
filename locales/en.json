@@ -1,1 +1,6 @@
-{}
+{
+  "settings": {
+    "title": "Matter Bridge",
+    "subtitle": "Bridge Homey devices to Matter."
+  }
+}

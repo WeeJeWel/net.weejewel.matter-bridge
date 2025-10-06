@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Matter Bridge Settings</title>
+  <script
+    type="text/javascript"
+    src="/homey.js"
+    data-origin="settings"
+  ></script>
+  <style type="text/css">
+    #devices {}
+
+    .device {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 8px 0;
+    }
+
+    .device.is-selected {
+      border-color: #0078d4;
+      background: #e5f1fb;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="homey-header">
+    <h1
+      class="homey-title"
+      data-i18n="settings.title"
+    ></h1>
+    <p
+      class="homey-subtitle"
+      data-i18n="settings.subtitle"
+    ></p>
+  </header>
+
+  <div id="devices"> </div>
+
+  <script type="text/javascript">
+    function onHomeyReady(Homey) {
+      const $devices = document.getElementById('devices');
+
+      Promise.resolve().then(async () => {
+        // TODO: Show QR code if not yet paired
+
+        const devices = await Homey.api('GET', '/devices');
+        console.log('Devices:', devices);
+
+        for (const device of devices) {
+          const $device = document.createElement('div');
+          $device.className = 'device';
+          $device.classList.toggle('is-selected', device.selected);
+          $device.addEventListener('click', async () => {
+            if ($device.classList.contains('is-selected')) {
+              Homey.api('POST', `/devices/disable`, { deviceId: device.id })
+                .then(() => {
+                  $device.classList.remove('is-selected');
+                })
+                .catch(err => Homey.error(err));
+            } else {
+              Homey.api('POST', `/devices/enable`, { deviceId: device.id })
+                .then(() => {
+                  $device.classList.add('is-selected');
+                })
+                .catch(err => Homey.error(err));
+            }
+          });
+          $devices.appendChild($device);
+
+          const $deviceName = document.createElement('div');
+          $deviceName.className = 'device-name';
+          $deviceName.textContent = device.name;
+          $device.appendChild($deviceName);
+        }
+
+        Homey.ready();
+      }).catch(err => {
+        console.error(err);
+        Homey.error(err);
+      });
+    }
+  </script>
+
+</body>
+
+</html>
