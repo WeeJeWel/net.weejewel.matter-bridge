@@ -1,10 +1,21 @@
+import readline from 'node:readline';
+
 import { HomeyAPI } from 'homey-api';
+import { checkbox } from '@inquirer/prompts';
+
 import MatterBridgeServer from './lib/MatterBridgeServer.mjs';
+
+console.log('----------------------------------------------');
+console.log('Starting Matter Bridge in standalone mode...');
+console.log('Press [D] to select Homey devices to expose to Matter.');
+console.log('Press [Q] to quit.');
+console.log('----------------------------------------------');
+console.log('');
 
 const api = await HomeyAPI.createLocalAPI({
   address: process.env.HOMEY_ADDRESS,
   token: process.env.HOMEY_TOKEN,
-  debug: (...props) => console.log(`[HomeyAPI]`, ...props),
+  // debug: (...props) => console.log(`[HomeyAPI]`, ...props),
 });
 
 const server = new MatterBridgeServer({
@@ -13,5 +24,66 @@ const server = new MatterBridgeServer({
   storageServiceLocation: './.matter/',
   uniqueId: 'standalone',
   serialNumber: 'standalone',
+  enabledDeviceIds: new Set(),
 });
 await server.start();
+
+// Graceful Shutdown
+process.once('SIGINT', () => {
+  console.log('Received SIGINT, shutting down...');
+  api.destroy();
+  process.stdin.setRawMode(false);
+});
+
+process.once('SIGTERM', () => {
+  console.log('Received SIGTERM, shutting down...');
+  api.destroy();
+  process.stdin.setRawMode(false);
+});
+
+// Listen for Key Presses in the CLI
+if (process.stdin.isTTY) {
+  process.stdin.setRawMode(true);
+}
+
+readline.emitKeypressEvents(process.stdin);
+process.stdin.on('keypress', (chunk, key) => {
+  if (key?.name == 'q') {
+    process.exit();
+  }
+
+  if (key?.name === 'd') {
+    Promise.resolve().then(async () => {
+      const devices = await api.devices.getDevices();
+      const selectedDeviceIds = await checkbox({
+        message: 'Which Homey devices should be exposed to Matter?',
+        choices: Object.values(devices).map(device => ({
+          name: `${device.id} — ${device.name}`,
+          value: device.id,
+          checked: server.enabledDeviceIds.has(device.id),
+        })),
+        loop: false,
+      }).catch(() => []);
+
+      // Uninitialize old devices
+      for (const deviceId of server.enabledDeviceIds.values()) {
+        if (!selectedDeviceIds.includes(deviceId)) {
+          await server.disableDevice(deviceId);
+        }
+      }
+
+      // Initialize new devices
+      for (const deviceId of selectedDeviceIds) {
+        if (!server.enabledDeviceIds.has(deviceId)) {
+          await server.enableDevice(deviceId);
+        }
+      }
+
+      // Resume Listening for Key Presses
+      if (process.stdin.isTTY) {
+        process.stdin.setRawMode(true);
+      }
+      process.stdin.resume();
+    }).catch(err => console.error(err));
+  }
+});

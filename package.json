@@ -10,5 +10,8 @@
   "dependencies": {
     "@matter/main": "^0.15.3",
     "homey-api": "^3.14.0"
+  },
+  "devDependencies": {
+    "@inquirer/prompts": "^7.8.6"
   }
 }
