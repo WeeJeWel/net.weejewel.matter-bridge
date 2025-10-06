@@ -1,4 +1,7 @@
 export default {
+  getState: async ({ homey }) => {
+    return homey.app.onAPIGetState();
+  },
   getDevices: async ({ homey }) => {
     return homey.app.onAPIGetDevices();
   },

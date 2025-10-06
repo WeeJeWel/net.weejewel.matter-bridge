@@ -8,72 +8,373 @@
     src="/homey.js"
     data-origin="settings"
   ></script>
+  <script
+    type="text/javascript"
+    src="./qrcode.min.js"
+  ></script>
   <style type="text/css">
-    #devices {}
+    #content {
+      .zones {
+        margin-top: var(--homey-su-4);
 
-    .device {
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 12px;
-      margin: 8px 0;
+        >.zone {
+          >.zone-name {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--homey-color-mono-100);
+          }
+
+          >.zone-devices {
+            display: grid;
+            width: 100%;
+            grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+            grid-gap: 12px;
+            margin: var(--homey-su-2) 0 var(--homey-su-4);
+
+            @media screen and (max-width: 380px) {
+              grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+            }
+          }
+        }
+      }
+
+      /* Device tile */
+      .device {
+        display: block;
+        -webkit-user-select: none !important;
+        user-select: none !important;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-user-drag: none;
+        max-width: 140px;
+      }
+
+      .device__input {
+        display: none;
+      }
+
+      .device__tile {
+        --device-tile-padding: 7.4%;
+
+        position: relative;
+        display: block;
+        cursor: pointer;
+        padding-bottom: calc(100% - 4px);
+        border-radius: var(--homey-border-radius);
+        background: var(--homey-color-component);
+        box-shadow: var(--homey-box-shadow);
+        border: 2px solid transparent;
+        transition: 200ms ease-in-out;
+        transition-property: transform, border-color, background-color;
+        will-change:
+          transform, border-color, background-color;
+        /* prevent transition flickering on sibling device tiles on safari for iPad and iPhone */
+      }
+
+      .device__tile:active {
+        transform: scale(0.95);
+      }
+
+      .device__input:checked+.device__tile {
+        border-color: var(--homey-color-blue);
+        background: var(--homey-color-blue-o-05);
+        box-shadow: var(--homey-box-shadow-selected);
+      }
+
+      .device__name-scale-wrapper {
+        position: absolute;
+        top: var(--device-tile-padding);
+        right: var(--device-tile-padding);
+        bottom: var(--device-tile-padding);
+        left: var(--device-tile-padding);
+        width: calc(100% - var(--device-tile-padding) * 2);
+        height: calc(100% - var(--device-tile-padding) * 2);
+      }
+
+      .device__name-position-wrapper {
+        display: flex;
+        justify-items: flex-end;
+        width: 92px;
+        height: 92px;
+      }
+
+      .device__name {
+        margin-top: auto;
+        line-height: 1.13;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        font-size: 15px;
+        -webkit-user-select: none !important;
+        user-select: none !important;
+        word-break: break-word;
+        hyphens: auto;
+      }
+
+      .device__icon {
+        position: absolute;
+        display: block;
+        top: var(--device-tile-padding);
+        left: var(--device-tile-padding);
+        flex-shrink: 0;
+        width: 33%;
+        padding-bottom: 33%;
+        background-color: var(--homey-color-mono-80);
+        mask-size: contain;
+
+        &.is-missing {
+          background-color: transparent;
+          border: 3px dashed var(--homey-color-mono-70);
+          border-radius: var(--homey-border-radius);
+        }
+      }
+
+      .device__checked {
+        opacity: 0;
+        position: absolute;
+        right: var(--device-tile-padding);
+        top: var(--device-tile-padding);
+        display: block;
+        width: 18.5%;
+        height: 18.5%;
+        background: var(--homey-color-blue);
+        -webkit-mask-size: 100%;
+        mask-size: 100%;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        transition: opacity var(--homey-duration-fast) var(--homey-curve-fast-in);
+      }
+
+      .device__input[type='checkbox']+.device__tile .device__checked {
+        -webkit-mask-image: url('/icons/checkmark-square-fill.svg');
+        mask-image: url('/icons/checkmark-square-fill.svg');
+      }
+
+      .device__input[type='radio']+.device__tile .device__checked {
+        -webkit-mask-image: url('/icons/checkmark-circle-fill.svg');
+        mask-image: url('/icons/checkmark-circle-fill.svg');
+      }
+
+      .device__input:checked+.device__tile .device__checked {
+        opacity: 1;
+      }
     }
 
-    .device.is-selected {
-      border-color: #0078d4;
-      background: #e5f1fb;
+    .qr {
+      width: 60vw;
+      padding: 5vw;
+      box-sizing: border-box;
+      border: 4px solid black;
+      border-radius: 4vw;
+      margin: var(--homey-su-2) auto;
+
+      >.qr-logo {
+        width: 100%;
+        height: 12vw;
+        background: url(./logo.svg) no-repeat center center;
+        background-size: contain;
+        margin-bottom: 5vw;
+      }
+
+      >.qr-image {
+        width: 100%;
+
+        >img {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      >.qr-text {
+        text-align: center;
+        font-size: 6vw;
+        font-family: monospace;
+        color: #aaa;
+        margin-top: 5vw;
+      }
     }
   </style>
 </head>
 
 <body>
-  <header class="homey-header">
-    <h1
-      class="homey-title"
-      data-i18n="settings.title"
-    ></h1>
-    <p
-      class="homey-subtitle"
-      data-i18n="settings.subtitle"
-    ></p>
-  </header>
+  <p
+    id="subtitle"
+    class="homey-subtitle"
+  >Select which devices to bridge with Matter.</p>
 
-  <div id="devices"> </div>
+  <div id="content"> </div>
+
+  <template id="template-device">
+    <label
+      data-template-device-label
+      class="device hy-nostyle"
+    >
+      <input
+        data-template-device-input
+        type="checkbox"
+        name="device"
+        class="hy-input-checkbox device__input"
+      />
+      <span class="device__tile">
+        <span
+          data-template-device-icon
+          class="device__icon icon"
+        ></span>
+        <span class="device__checked"></span>
+        <svg
+          class="device__name-scale-wrapper"
+          width="100%"
+          height="100%"
+          viewBox="0 0 92 92"
+          preserveAspectRatio="xMinYMin meet"
+        >
+          <foreignObject
+            width="100%"
+            height="100%"
+            x="0"
+            y="0"
+            xmlns="http://www.w3.org/1999/xhtml"
+          >
+            <div
+              class="device__name-position-wrapper"
+              xmlns="http://www.w3.org/1999/xhtml"
+            >
+              <span
+                data-template-device-name
+                class="device__name"
+              ></span>
+            </div>
+          </foreignObject>
+        </svg>
+      </span>
+    </label>
+  </template>
 
   <script type="text/javascript">
     function onHomeyReady(Homey) {
-      const $devices = document.getElementById('devices');
+      const $subtitle = document.getElementById('subtitle');
+      const $content = document.getElementById('content');
+      const $templateDevice = document.getElementById('template-device');
 
       Promise.resolve().then(async () => {
-        // TODO: Show QR code if not yet paired
+        const state = await Homey.api('GET', '/state');
 
-        const devices = await Homey.api('GET', '/devices');
-        console.log('Devices:', devices);
+        if (state.commissioned === true) { // TODO: Revert
+          $subtitle.textContent = 'Select which devices to bridge with Matter.';
 
-        for (const device of devices) {
-          const $device = document.createElement('div');
-          $device.className = 'device';
-          $device.classList.toggle('is-selected', device.selected);
-          $device.addEventListener('click', async () => {
-            if ($device.classList.contains('is-selected')) {
-              Homey.api('POST', `/devices/disable`, { deviceId: device.id })
-                .then(() => {
-                  $device.classList.remove('is-selected');
-                })
-                .catch(err => Homey.error(err));
+          // Get Devices
+          const devices = await Homey.api('GET', '/devices');
+
+          // Create Zones
+          const $zones = document.createElement('div');
+          $zones.className = 'zones';
+          $content.appendChild($zones);
+
+          const $zone_devices_by_name = {};
+
+          const zones = new Set();
+          for (const device of devices) {
+            if (!device.zoneName) continue;
+            zones.add(device.zoneName);
+          }
+
+          const zonesArray = Array.from(zones);
+          zonesArray.sort();
+          for (const zone of zonesArray) {
+            const $zone = document.createElement('div');
+            $zone.className = 'zone';
+            $zone.dataset.zoneName = zone;
+            $zones.appendChild($zone);
+
+            const $zoneName = document.createElement('h2');
+            $zoneName.className = 'zone-name';
+            $zoneName.textContent = zone;
+            $zone.appendChild($zoneName);
+
+            const $zoneDevices = document.createElement('div');
+            $zoneDevices.className = 'zone-devices';
+            $zone.appendChild($zoneDevices);
+
+            $zone_devices_by_name[zone] = $zoneDevices;
+          }
+
+          // Add Devices to Zones
+          for (const device of devices) {
+            const $device = $templateDevice.content.cloneNode(true);
+
+            const $label = $device.querySelector('[data-template-device-label]');
+            const $input = $device.querySelector('[data-template-device-input]');
+            const $name = $device.querySelector('[data-template-device-name]');
+            const $icon = $device.querySelector('[data-template-device-icon]');
+
+            $input.addEventListener('change', function () {
+              switch ($input.checked) {
+                case true: {
+                  Homey.api('POST', `/devices/enable`, {
+                    deviceId: device.id
+                  }).catch(err => Homey.error(err));
+                  break;
+                }
+                case false: {
+                  Homey.api('POST', `/devices/disable`, {
+                    deviceId: device.id,
+                  }).catch(err => Homey.error(err));
+                  break;
+                }
+              }
+            });
+
+            $name.setAttribute('title', device.name);
+            $name.textContent = device.name;
+
+            if (device.iconUrl) {
+              $icon.style.webkitMaskImage = 'url(' + device.iconUrl + ')';
+              $icon.style.maskImage = 'url(' + device.iconUrl + ')';
             } else {
-              Homey.api('POST', `/devices/enable`, { deviceId: device.id })
-                .then(() => {
-                  $device.classList.add('is-selected');
-                })
-                .catch(err => Homey.error(err));
+              $icon.classList.add('is-missing');
             }
-          });
-          $devices.appendChild($device);
 
-          const $deviceName = document.createElement('div');
-          $deviceName.className = 'device-name';
-          $deviceName.textContent = device.name;
-          $device.appendChild($deviceName);
+            if (device.isSelected) {
+              $input.checked = 'checked';
+            }
+
+            $zone_devices_by_name[device.zoneName].appendChild($device);
+          }
+        } else {
+          $subtitle.textContent = 'Scan the QR code with your Matter controller app.';
+
+          // Show QR code if not yet paired
+          const $qr = document.createElement('div');
+          $qr.className = 'qr';
+          $content.appendChild($qr);
+
+          const $qrLogo = document.createElement('div');
+          $qrLogo.className = 'qr-logo';
+          $qr.appendChild($qrLogo);
+
+          const $qrImage = document.createElement('div');
+          $qrImage.className = 'qr-image';
+          $qr.appendChild($qrImage);
+
+          new QRCode($qrImage, {
+            text: state.qrPairingCode,
+            width: 1024,
+            height: 1024,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H,
+          });
+
+          const $qrText = document.createElement('div');
+          $qrText.className = 'qr-text';
+          $qrText.textContent = state.manualPairingCode;
+          $qr.appendChild($qrText);
         }
 
         Homey.ready();

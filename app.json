@@ -31,6 +31,10 @@
   },
   "support": "mailto:emile@emile.nl",
   "api": {
+    "getState": {
+      "method": "GET",
+      "path": "/state"
+    },
     "getDevices": {
       "method": "GET",
       "path": "/devices"
