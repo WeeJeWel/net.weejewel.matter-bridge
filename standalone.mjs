@@ -8,7 +8,7 @@ import MatterBridgeServer from './lib/MatterBridgeServer.mjs';
 console.log('----------------------------------------------');
 console.log('Starting Matter Bridge in standalone mode...');
 console.log('Press [D] to select Homey devices to expose to Matter.');
-console.log('Press [Q] to quit.');
+console.log('Press [Q] to exit.');
 console.log('----------------------------------------------');
 console.log('');
 
@@ -48,42 +48,46 @@ if (process.stdin.isTTY) {
 
 readline.emitKeypressEvents(process.stdin);
 process.stdin.on('keypress', (chunk, key) => {
-  if (key?.name == 'q') {
-    process.exit();
-  }
+  switch (key?.name) {
+    case 'q': {
+      process.exit();
+      break;
+    }
 
-  if (key?.name === 'd') {
-    Promise.resolve().then(async () => {
-      const devices = await api.devices.getDevices();
-      const selectedDeviceIds = await checkbox({
-        message: 'Which Homey devices should be exposed to Matter?',
-        choices: Object.values(devices).map(device => ({
-          name: `${device.id} — ${device.name}`,
-          value: device.id,
-          checked: server.enabledDeviceIds.has(device.id),
-        })),
-        loop: false,
-      }).catch(() => []);
+    case 'd': {
+      Promise.resolve().then(async () => {
+        const devices = await api.devices.getDevices();
+        const selectedDeviceIds = await checkbox({
+          message: 'Which Homey devices should be exposed to Matter?',
+          choices: Object.values(devices).map(device => ({
+            name: `${device.id} — ${device.name}`,
+            value: device.id,
+            checked: server.enabledDeviceIds.has(device.id),
+          })),
+          loop: false,
+        }).catch(() => []);
 
-      // Uninitialize old devices
-      for (const deviceId of server.enabledDeviceIds.values()) {
-        if (!selectedDeviceIds.includes(deviceId)) {
-          await server.disableDevice(deviceId);
+        // Uninitialize old devices
+        for (const deviceId of server.enabledDeviceIds.values()) {
+          if (!selectedDeviceIds.includes(deviceId)) {
+            await server.disableDevice(deviceId);
+          }
         }
-      }
 
-      // Initialize new devices
-      for (const deviceId of selectedDeviceIds) {
-        if (!server.enabledDeviceIds.has(deviceId)) {
-          await server.enableDevice(deviceId);
+        // Initialize new devices
+        for (const deviceId of selectedDeviceIds) {
+          if (!server.enabledDeviceIds.has(deviceId)) {
+            await server.enableDevice(deviceId);
+          }
         }
-      }
 
-      // Resume Listening for Key Presses
-      if (process.stdin.isTTY) {
-        process.stdin.setRawMode(true);
-      }
-      process.stdin.resume();
-    }).catch(err => console.error(err));
+        // Resume Listening for Key Presses
+        if (process.stdin.isTTY) {
+          process.stdin.setRawMode(true);
+        }
+        process.stdin.resume();
+      }).catch(err => console.error(err));
+      break;
+    }
   }
 });
