@@ -379,7 +379,6 @@
           // Poll for commissioned state
           setInterval(async () => {
             const state = await Homey.api('GET', '/state');
-            console.log('state', state);
             if (state.commissioned === true) {
               window.location.reload();
             }
