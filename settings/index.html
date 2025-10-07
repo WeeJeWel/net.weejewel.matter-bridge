@@ -206,7 +206,7 @@
   <p
     id="subtitle"
     class="homey-subtitle"
-  >Select which devices to bridge with Matter.</p>
+  >Select the devices that should be bridged to the Matter network.</p>
 
   <div id="content"> </div>
 
@@ -265,7 +265,7 @@
       Promise.resolve().then(async () => {
         const state = await Homey.api('GET', '/state');
 
-        if (state.commissioned === true) { // TODO: Revert
+        if (state.commissioned === true) {
           $subtitle.textContent = 'Select which devices to bridge with Matter.';
 
           // Get Devices
@@ -375,6 +375,15 @@
           $qrText.className = 'qr-text';
           $qrText.textContent = state.manualPairingCode;
           $qr.appendChild($qrText);
+
+          // Poll for commissioned state
+          setInterval(async () => {
+            const state = await Homey.api('GET', '/state');
+            console.log('state', state);
+            if (state.commissioned === true) {
+              window.location.reload();
+            }
+          }, 2000);
         }
 
         Homey.ready();
