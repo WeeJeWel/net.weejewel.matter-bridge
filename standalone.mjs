@@ -8,6 +8,7 @@ import MatterBridgeServer from './lib/MatterBridgeServer.mjs';
 console.log('----------------------------------------------');
 console.log('Starting Matter Bridge in standalone mode...');
 console.log('Press [D] to select Homey devices to expose to Matter.');
+console.log('Press [R] to restart the server.');
 console.log('Press [Q] to exit.');
 console.log('----------------------------------------------');
 console.log('');
@@ -50,7 +51,14 @@ readline.emitKeypressEvents(process.stdin);
 process.stdin.on('keypress', (chunk, key) => {
   switch (key?.name) {
     case 'q': {
+      console.log('Exiting...');
       process.exit();
+      break;
+    }
+
+    case 'r': {
+      console.log('Restarting...');
+      process.exit(42); // Special code to indicate restart
       break;
     }
 

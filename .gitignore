@@ -4,4 +4,4 @@
 
 # Standalone
 /.envrc
-/.matter
+/.matter*
