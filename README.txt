@@ -11,6 +11,14 @@ SUPPORTED DEVICES
 — Air Quality Sensors
 — CO2 & Smoke Alarms
 
+USAGE
+After installing the app, visit the app's settings.
+
+Within the Homey app for iOS/Android, navigate to More (⋯) → Settings → Matter Bridge.
+Within the Homey Web App, navigate to Settings (⚙︎) → Matter Bridge → Configure.
+
+Then scan the QR Code from your Matter controller's app, and finally choose the devices you'd like to bridge.
+
 CONTRIBUTING
 Please feel free to contribute by adding more device types on GitHub.
 
