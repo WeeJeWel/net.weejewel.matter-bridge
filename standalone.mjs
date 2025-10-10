@@ -25,7 +25,9 @@ const server = new MatterBridgeServer({
   storageServiceLocation: './.matter/',
   uniqueId: 'standalone',
   serialNumber: 'standalone',
-  enabledDeviceIds: new Set(),
+  enabledDeviceIds: new Set([
+    process.env.HOMEY_DEVICE_IDS?.split(',').map(id => id.trim()).filter(id => id) || [],
+  ]),
 });
 await server.start();
 

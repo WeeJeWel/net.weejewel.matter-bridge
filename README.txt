@@ -1,1 +1,18 @@
-Expose Homey Pro's devices to Matter.
+Bridge your devices from Homey Pro to another Matter controller, such as Apple Home, Google Home, Amazon Alexa, Samsung SmartThings and Home Assistant.
+
+SUPPORTED DEVICES
+— On/Off Lights, Dimmable Lights, Color Lights & Temperature Lights
+— Plug-in Sockets
+— Thermostats
+- Blinds, Curtains, Roller Shutters
+— Door/Window Sensors
+— Temperature & Humditity Sensors
+— Motion & Occupancy Sensors
+— Air Quality Sensors
+— CO2 & Smoke Alarms
+
+CONTRIBUTING
+Please feel free to contribute by adding more device types on GitHub.
+
+CREDITS
+Many thanks to the amazing people that developed the Matter.js project.
