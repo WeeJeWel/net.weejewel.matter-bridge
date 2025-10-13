@@ -4,6 +4,7 @@ SUPPORTED DEVICES
 — On/Off Lights, Dimmable Lights, Color Lights & Temperature Lights
 — Plug-in Sockets
 — Thermostats
+— Locks
 — Blinds, Curtains, Roller Shutters
 — Door/Window Sensors
 — Temperature & Humditity Sensors
