@@ -4,5 +4,8 @@
   },
   "0.1.1": {
     "en": "Added support for thermostats with a thermostat_mode subset."
+  },
+  "0.2.0": {
+    "en": "Added support for locks."
   }
 }
