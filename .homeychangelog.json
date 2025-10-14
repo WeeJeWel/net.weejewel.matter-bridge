@@ -7,5 +7,8 @@
   },
   "0.2.0": {
     "en": "Added support for locks."
+  },
+  "0.2.1": {
+    "en": "Adjusted compatibility to Homey Pro v12.9.0."
   }
 }

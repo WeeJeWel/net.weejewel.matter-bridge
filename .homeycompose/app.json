@@ -1,7 +1,7 @@
 {
   "id": "net.weejewel.matter-bridge",
-  "version": "0.2.0",
-  "compatibility": ">=12.7.1",
+  "version": "0.2.1",
+  "compatibility": ">=12.9.0",
   "sdk": 3,
   "platforms": [
     "local"
