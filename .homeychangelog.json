@@ -10,5 +10,8 @@
   },
   "0.2.1": {
     "en": "Adjusted compatibility to Homey Pro v12.9.0."
+  },
+  "0.3.0": {
+    "en": "Stability improvements, and the Matter security code will be copied to your clipboard once clicked."
   }
 }
