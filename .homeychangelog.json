@@ -16,5 +16,8 @@
   },
   "0.3.1": {
     "en": "Added a hint to take a screenshot if you're on the same device."
+  },
+  "0.3.2": {
+    "en": "Added support for heatpumps."
   }
 }
