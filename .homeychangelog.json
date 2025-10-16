@@ -13,5 +13,8 @@
   },
   "0.3.0": {
     "en": "Stability improvements, and the Matter security code will be copied to your clipboard once clicked."
+  },
+  "0.3.1": {
+    "en": "Added a hint to take a screenshot if you're on the same device."
   }
 }
