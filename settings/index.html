@@ -197,6 +197,8 @@
         font-family: monospace;
         color: #aaa;
         margin-top: 5vw;
+        cursor: pointer;
+        user-select: all;
       }
     }
   </style>
@@ -360,6 +362,9 @@
 
           const $qrImage = document.createElement('div');
           $qrImage.className = 'qr-image';
+          $qrImage.addEventListener('click', () => {
+            // Can we deeplink to another app?
+          });
           $qr.appendChild($qrImage);
 
           new QRCode($qrImage, {
@@ -374,6 +379,11 @@
           const $qrText = document.createElement('div');
           $qrText.className = 'qr-text';
           $qrText.textContent = state.manualPairingCode;
+          $qrText.addEventListener('click', () => {
+            // Copy to Clipboard
+            navigator.clipboard.writeText(state.manualPairingCode);
+            Homey.alert('The security code has been copied to your clipboard!');
+          });
           $qr.appendChild($qrText);
 
           // Poll for commissioned state

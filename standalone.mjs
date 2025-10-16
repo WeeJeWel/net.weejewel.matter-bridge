@@ -23,8 +23,16 @@ const server = new MatterBridgeServer({
   api,
   debug: (...props) => console.log(`[MatterBridgeServer]`, ...props),
   storageServiceLocation: './.matter/',
+  deviceName: 'Homey Matter Bridge',
+  vendorName: 'Athom B.V.',
+  vendorId: 65521,
+  productName: 'Homey Matter Bridge',
+  productId: 32768,
   uniqueId: 'standalone',
   serialNumber: 'standalone',
+  passcode: 20202021,
+  discriminator: 3840,
+  port: 5540,
   enabledDeviceIds: new Set(process.env.HOMEY_DEVICE_IDS?.split(',').map(id => id.trim()).filter(id => id) || []),
 });
 await server.start();
