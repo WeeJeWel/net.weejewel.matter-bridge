@@ -22,5 +22,8 @@
   },
   "0.3.3": {
     "en": "Fixed an issue where the measured temperature of a thermostat would be a factor 100 too small."
+  },
+  "0.3.4": {
+    "en": "Fixed an issue where devices might lose their room in Apple Home."
   }
 }
