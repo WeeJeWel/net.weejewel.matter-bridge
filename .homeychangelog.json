@@ -25,5 +25,8 @@
   },
   "0.3.4": {
     "en": "Fixed an issue where devices might lose their room in Apple Home."
+  },
+  "0.4.0": {
+    "en": "Filtered already Matter and Grouped devices. Show custom device icons in the app settings."
   }
 }
