@@ -335,9 +335,22 @@
             $name.setAttribute('title', device.name);
             $name.textContent = device.name;
 
-            if (device.iconUrl) {
-              $icon.style.webkitMaskImage = 'url(' + device.iconUrl + ')';
-              $icon.style.maskImage = 'url(' + device.iconUrl + ')';
+            if (device.iconOverride) {
+              const iconUrl = `https://athombv.github.io/node-homey-lib/assets/device/icons/${device.iconOverride}.svg`;
+              const image = new Image();
+              image.src = iconUrl;
+              image.onload = () => {
+                $icon.style.maskImage = `url(${iconUrl})`;
+              };
+              image.onerror = () => {
+                if (device.iconUrl) {
+                  $icon.style.maskImage = `url(${device.iconUrl})`;
+                } else {
+                  $icon.classList.add('is-missing');
+                }
+              };
+            } else if (device.iconUrl) {
+              $icon.style.maskImage = `url(${device.iconUrl})`;
             } else {
               $icon.classList.add('is-missing');
             }
