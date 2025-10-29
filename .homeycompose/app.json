@@ -1,10 +1,13 @@
 {
   "id": "com.athom.matter-bridge",
-  "version": "0.4.0",
-  "compatibility": ">=12.9.0",
+  "version": "0.4.1",
+  "compatibility": ">=12.8.1",
   "sdk": 3,
   "platforms": [
     "local"
+  ],
+  "platformLocalRequiredFeatures": [
+    "matter"
   ],
   "brandColor": "#000000",
   "name": {

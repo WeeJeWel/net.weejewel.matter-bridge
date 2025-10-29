@@ -28,5 +28,8 @@
   },
   "0.4.0": {
     "en": "Filtered already Matter and Grouped devices. Show custom device icons in the app settings."
+  },
+  "0.4.1": {
+    "en": "Adjusted compatibility to Homey Pro v12.8.1."
   }
 }
