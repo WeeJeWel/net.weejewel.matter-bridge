@@ -31,5 +31,8 @@
   },
   "0.4.1": {
     "en": "Adjusted compatibility to Homey Pro v12.8.1."
+  },
+  "0.4.2": {
+    "en": "Adjusted compatibility to Homey Pro v12.8.2."
   }
 }
