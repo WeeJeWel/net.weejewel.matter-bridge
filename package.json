@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "@matter/main": "^0.15.5",
-    "homey-api": "^3.14.6"
+    "homey-api": "^3.14.6",
+    "p-queue": "^9.0.0"
   },
   "devDependencies": {
     "@inquirer/prompts": "^7.8.6"
