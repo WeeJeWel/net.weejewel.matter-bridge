@@ -43,5 +43,8 @@
   },
   "0.4.5": {
     "en": "Improved performance for Homey Pro's with many devices."
+  },
+  "0.4.6": {
+    "en": "Decreased the app's filesize."
   }
 }
