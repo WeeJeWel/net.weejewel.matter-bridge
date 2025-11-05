@@ -37,5 +37,8 @@
   },
   "0.4.3": {
     "en": "Improved performance when many devices are bridged."
+  },
+  "0.4.4": {
+    "en": "Fixed an issue with occupancy sensing devices."
   }
 }
