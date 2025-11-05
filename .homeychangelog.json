@@ -40,5 +40,8 @@
   },
   "0.4.4": {
     "en": "Fixed an issue with occupancy sensing devices."
+  },
+  "0.4.5": {
+    "en": "Improved performance for Homey Pro's with many devices."
   }
 }
