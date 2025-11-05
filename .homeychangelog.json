@@ -46,5 +46,8 @@
   },
   "0.4.6": {
     "en": "Decreased the app's filesize."
+  },
+  "0.4.7": {
+    "en": "Performance improvements."
   }
 }
