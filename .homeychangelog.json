@@ -52,5 +52,8 @@
   },
   "0.4.8": {
     "en": "Fixed an issue where Contact Alarm was inverted."
+  },
+  "0.4.9": {
+    "en": "Fixed an issue where the QR code was too big on Android."
   }
 }

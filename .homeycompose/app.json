@@ -1,6 +1,6 @@
 {
   "id": "com.athom.matter-bridge",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "compatibility": ">=12.8.2",
   "sdk": 3,
   "platforms": [
