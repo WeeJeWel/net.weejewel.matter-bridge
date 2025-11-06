@@ -49,5 +49,8 @@
   },
   "0.4.7": {
     "en": "Performance improvements."
+  },
+  "0.4.8": {
+    "en": "Fixed an issue where Contact Alarm was inverted."
   }
 }
