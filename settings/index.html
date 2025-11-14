@@ -208,7 +208,7 @@
   <p
     id="subtitle"
     class="homey-subtitle"
-  >Select the devices that should be bridged to the Matter network.</p>
+  >Select the devices and flows that should be bridged to the Matter network.</p>
 
   <div id="content"> </div>
 
@@ -268,7 +268,7 @@
         const state = await Homey.api('GET', '/state');
 
         if (state.commissioned === true) {
-          $subtitle.textContent = 'Select which devices to bridge with Matter.';
+          $subtitle.textContent = 'Select which devices and flows to bridge with Matter.';
 
           // Get Devices
           const devices = await Homey.api('GET', '/devices');
@@ -360,6 +360,64 @@
             }
 
             $zone_devices_by_name[device.zoneName].appendChild($device);
+          }
+
+          // Get Flows
+          const flows = await Homey.api('GET', '/flows');
+
+          if (flows.length > 0) {
+            // Create Flows Section
+            const $flowsSection = document.createElement('div');
+            $flowsSection.className = 'zone';
+            $zones.appendChild($flowsSection);
+
+            const $flowsName = document.createElement('h2');
+            $flowsName.className = 'zone-name';
+            $flowsName.textContent = 'Flows';
+            $flowsSection.appendChild($flowsName);
+
+            const $flowsContainer = document.createElement('div');
+            $flowsContainer.className = 'zone-devices';
+            $flowsSection.appendChild($flowsContainer);
+
+            // Sort flows alphabetically
+            flows.sort((a, b) => a.name.localeCompare(b.name));
+
+            // Add Flows
+            for (const flow of flows) {
+              const $flow = $templateDevice.content.cloneNode(true);
+
+              const $label = $flow.querySelector('[data-template-device-label]');
+              const $input = $flow.querySelector('[data-template-device-input]');
+              const $name = $flow.querySelector('[data-template-device-name]');
+              const $icon = $flow.querySelector('[data-template-device-icon]');
+
+              $input.addEventListener('change', function () {
+                switch ($input.checked) {
+                  case true: {
+                    Homey.api('POST', `/flows/enable`, {
+                      flowId: flow.id
+                    }).catch(err => Homey.error(err));
+                    break;
+                  }
+                  case false: {
+                    Homey.api('POST', `/flows/disable`, {
+                      flowId: flow.id,
+                    }).catch(err => Homey.error(err));
+                    break;
+                  }
+                }
+              });
+
+              $name.setAttribute('title', flow.name);
+              $name.textContent = flow.name;
+
+              if (flow.isSelected) {
+                $input.checked = 'checked';
+              }
+
+              $flowsContainer.appendChild($flow);
+            }
           }
         } else {
           $subtitle.textContent = 'Scan the QR code with your Matter controller app, or take a screenshot if you\'re on the same device.';

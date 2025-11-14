@@ -56,6 +56,24 @@
       "body": {
         "deviceId": "string"
       }
+    },
+    "getFlows": {
+      "method": "GET",
+      "path": "/flows"
+    },
+    "enableFlow": {
+      "method": "POST",
+      "path": "/flows/enable",
+      "body": {
+        "flowId": "string"
+      }
+    },
+    "disableFlow": {
+      "method": "POST",
+      "path": "/flows/disable",
+      "body": {
+        "flowId": "string"
+      }
     }
   }
 }

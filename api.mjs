@@ -10,5 +10,14 @@ export default {
   },
   disableDevice: async ({ homey, body }) => {
     return homey.app.onAPIDisableDevice({ deviceId: body.deviceId });
+  },
+  getFlows: async ({ homey }) => {
+    return homey.app.onAPIGetFlows();
+  },
+  enableFlow: async ({ homey, body }) => {
+    return homey.app.onAPIEnableFlow({ flowId: body.flowId });
+  },
+  disableFlow: async ({ homey, body }) => {
+    return homey.app.onAPIDisableFlow({ flowId: body.flowId });
   }
 };
