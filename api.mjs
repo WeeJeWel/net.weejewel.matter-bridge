@@ -10,5 +10,5 @@ export default {
   },
   disableDevice: async ({ homey, body }) => {
     return homey.app.onAPIDisableDevice({ deviceId: body.deviceId });
-  }
+  },
 };

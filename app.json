@@ -4,12 +4,8 @@
   "version": "0.4.9",
   "compatibility": ">=12.8.2",
   "sdk": 3,
-  "platforms": [
-    "local"
-  ],
-  "platformLocalRequiredFeatures": [
-    "matter"
-  ],
+  "platforms": ["local"],
+  "platformLocalRequiredFeatures": ["matter"],
   "brandColor": "#000000",
   "name": {
     "en": "Matter Bridge"
@@ -17,12 +13,8 @@
   "description": {
     "en": "Expose Homey Pro's devices to Matter."
   },
-  "category": [
-    "tools"
-  ],
-  "permissions": [
-    "homey:manager:api"
-  ],
+  "category": ["tools"],
+  "permissions": ["homey:manager:api"],
   "images": {
     "small": "/assets/images/small.png",
     "large": "/assets/images/large.png",

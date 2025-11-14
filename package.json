@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "lint": "eslint --ext .js,.ts --ignore-path .gitignore .",
+    "lint": "biome check .",
     "clean-node-modules": "find node_modules/@matter -type f \\( -name '*.d.ts' -o -name '*.map' -o -name '*.ts' \\) -delete; find node_modules/@matter -type d \\( -name 'src' -o -name 'cjs' \\) -exec rm -rf {} +",
     "standalone": "bash -c 'while true; do node --max-old-space-size=128 standalone.mjs; code=$?; if [ $code -ne 42 ]; then exit $code; fi; done'"
   },
@@ -13,6 +13,7 @@
     "p-queue": "^9.0.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.3.5",
     "@inquirer/prompts": "^7.8.6"
   }
 }

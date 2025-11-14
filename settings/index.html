@@ -315,7 +315,7 @@
             const $name = $device.querySelector('[data-template-device-name]');
             const $icon = $device.querySelector('[data-template-device-icon]');
 
-            $input.addEventListener('change', function () {
+            $input.addEventListener('change', () => {
               switch ($input.checked) {
                 case true: {
                   Homey.api('POST', `/devices/enable`, {

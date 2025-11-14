@@ -1,7 +1,6 @@
 import readline from 'node:readline';
-
-import { HomeyAPI } from 'homey-api';
 import { checkbox } from '@inquirer/prompts';
+import { HomeyAPI } from 'homey-api';
 
 import MatterBridgeServer from './lib/MatterBridgeServer.mjs';
 
@@ -33,7 +32,11 @@ const server = new MatterBridgeServer({
   passcode: 20202021,
   discriminator: 3840,
   port: 5540,
-  enabledDeviceIds: new Set(process.env.HOMEY_DEVICE_IDS?.split(',').map(id => id.trim()).filter(id => id) || []),
+  enabledDeviceIds: new Set(
+    process.env.HOMEY_DEVICE_IDS?.split(',')
+      .map((id) => id.trim())
+      .filter((id) => id) || [],
+  ),
 });
 await server.start();
 
@@ -71,38 +74,40 @@ process.stdin.on('keypress', (chunk, key) => {
     }
 
     case 'd': {
-      Promise.resolve().then(async () => {
-        const devices = await api.devices.getDevices();
-        const selectedDeviceIds = await checkbox({
-          message: 'Which Homey devices should be exposed to Matter?',
-          choices: Object.values(devices).map(device => ({
-            name: `${device.id} — ${device.name}`,
-            value: device.id,
-            checked: server.enabledDeviceIds.has(device.id),
-          })),
-          loop: false,
-        }).catch(() => []);
+      Promise.resolve()
+        .then(async () => {
+          const devices = await api.devices.getDevices();
+          const selectedDeviceIds = await checkbox({
+            message: 'Which Homey devices should be exposed to Matter?',
+            choices: Object.values(devices).map((device) => ({
+              name: `${device.id} — ${device.name}`,
+              value: device.id,
+              checked: server.enabledDeviceIds.has(device.id),
+            })),
+            loop: false,
+          }).catch(() => []);
 
-        // Uninitialize old devices
-        for (const deviceId of server.enabledDeviceIds.values()) {
-          if (!selectedDeviceIds.includes(deviceId)) {
-            await server.disableDevice(deviceId);
+          // Uninitialize old devices
+          for (const deviceId of server.enabledDeviceIds.values()) {
+            if (!selectedDeviceIds.includes(deviceId)) {
+              await server.disableDevice(deviceId);
+            }
           }
-        }
 
-        // Initialize new devices
-        for (const deviceId of selectedDeviceIds) {
-          if (!server.enabledDeviceIds.has(deviceId)) {
-            await server.enableDevice(deviceId);
+          // Initialize new devices
+          for (const deviceId of selectedDeviceIds) {
+            if (!server.enabledDeviceIds.has(deviceId)) {
+              await server.enableDevice(deviceId);
+            }
           }
-        }
 
-        // Resume Listening for Key Presses
-        if (process.stdin.isTTY) {
-          process.stdin.setRawMode(true);
-        }
-        process.stdin.resume();
-      }).catch(err => console.error(err));
+          // Resume Listening for Key Presses
+          if (process.stdin.isTTY) {
+            process.stdin.setRawMode(true);
+          }
+          process.stdin.resume();
+        })
+        .catch((err) => console.error(err));
       break;
     }
   }
